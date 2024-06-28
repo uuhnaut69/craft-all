@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: ledger-cmd
+---
+spring:
+  webflux:
+    base-path: /api
+springdoc:
+  swagger-ui:
+    path: /swagger
+    enabled: true
+  api-docs:
+    path: /api-docs
+---
+spring:
+  docker:
+    compose:
+      file: ledger/ledger-cmd/compose.yaml
+---
