@@ -25,7 +25,6 @@
 
 package com.uuhnaut69.ledger_cmd.infrastructure.queue.disruptor.account;
 
-import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.util.DaemonThreadFactory;
 import com.uuhnaut69.ledger_cmd.domain.account.AccountCommandWrapper;
@@ -52,13 +51,9 @@ public class AccountDisruptorConfiguration {
 				.handleEventsWith(journalHandler, replicateHandler)
 				.then(businessHandler);
 
+		disruptor.start();
+
 		return disruptor;
 	}
 
-	@Bean("accountRingBuffer")
-	public RingBuffer<AccountCommandWrapper> accountRingBuffer(
-			Disruptor<AccountCommandWrapper> disruptor
-	) {
-		return disruptor.start();
-	}
 }

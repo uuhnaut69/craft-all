@@ -47,11 +47,11 @@ public class AccountBusinessHandler implements EventHandler<AccountCommandWrappe
 		try {
 			var account = switch (event.getCommand()) {
 				case CreateAccountCommand c ->
-						accountUseCase.createAccount(c.externalId(), c.code(), c.amount());
-				case DepositCommand d -> accountUseCase.deposit(d.accountId(), d.amount());
-				case WithdrawCommand w -> accountUseCase.withdraw(w.accountId(), w.amount());
+						this.accountUseCase.createAccount(c.externalId(), c.code(), c.amount());
+				case DepositCommand d -> this.accountUseCase.deposit(d.accountId(), d.amount());
+				case WithdrawCommand w -> this.accountUseCase.withdraw(w.accountId(), w.amount());
 				case TransferCommand t ->
-						accountUseCase.transfer(t.fromAccountId(), t.toAccountId(), t.amount());
+						this.accountUseCase.transfer(t.fromAccountId(), t.toAccountId(), t.amount());
 				default -> throw new IllegalStateException("Unexpected value: " + event);
 			};
 			event.getResponse().complete(account);

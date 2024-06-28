@@ -25,11 +25,12 @@
 
 package com.uuhnaut69.ledger_cmd.infrastructure.queue.disruptor.account;
 
-import com.lmax.disruptor.RingBuffer;
+import com.lmax.disruptor.dsl.Disruptor;
 import com.uuhnaut69.ledger_cmd.domain.account.Account;
 import com.uuhnaut69.ledger_cmd.domain.account.AccountCommandWrapper;
 import com.uuhnaut69.ledger_cmd.infrastructure.queue.disruptor.CommandDispatcher;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
@@ -38,19 +39,16 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class AccountCommandDispatcher implements CommandDispatcher<Account> {
 
-	private final RingBuffer<AccountCommandWrapper> accountRingBuffer;
+	private final Disruptor<AccountCommandWrapper> accountDisruptor;
 
 	@Override
 	public Mono<Account> dispatch(Object command) {
-		AccountCommandWrapper event;
-		long sequence = accountRingBuffer.next();
-		try {
-			event = accountRingBuffer.get(sequence);
+		var asyncResponse = new CompletableFuture<Account>();
+		asyncResponse.completeOnTimeout(null, 10, TimeUnit.SECONDS);
+		this.accountDisruptor.publishEvent((event, _) -> {
 			event.setCommand(command);
-			event.setResponse(new CompletableFuture<>());
-		} finally {
-			accountRingBuffer.publish(sequence);
-		}
-		return Mono.fromFuture(event.getResponse());
+			event.setResponse(asyncResponse);
+		});
+		return Mono.fromFuture(asyncResponse);
 	}
 }
