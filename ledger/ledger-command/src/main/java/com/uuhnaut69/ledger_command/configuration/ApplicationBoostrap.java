@@ -32,6 +32,7 @@ import com.uuhnaut69.ledger_domain.account.AccountRepository;
 import com.uuhnaut69.ledger_domain.account.AccountUseCase;
 import com.uuhnaut69.ledger_domain.account.AccountUseCaseImpl;
 import com.uuhnaut69.ledger_intrastructure.disruptor.CommandDispatcher;
+import com.uuhnaut69.ledger_intrastructure.disruptor.DisruptorExceptionHandler;
 import com.uuhnaut69.ledger_intrastructure.disruptor.account.AccountBusinessHandler;
 import com.uuhnaut69.ledger_intrastructure.disruptor.account.AccountCommandDispatcher;
 import com.uuhnaut69.ledger_intrastructure.disruptor.account.AccountCommandJournalHandler;
@@ -80,16 +81,24 @@ public class ApplicationBoostrap {
 	}
 
 	@Produces
+	@ApplicationScoped
+	public DisruptorExceptionHandler disruptorExceptionHandler() {
+		return new DisruptorExceptionHandler();
+	}
+
+	@Produces
 	@Singleton
 	public Disruptor<AccountCommandWrapper> accountCommandWrapperDisruptor(
 			AccountCommandJournalHandler accountCommandJournalHandler,
 			AccountCommandReplicateHandler accountCommandReplicateHandler,
-			AccountBusinessHandler accountBusinessHandler
+			AccountBusinessHandler accountBusinessHandler,
+			DisruptorExceptionHandler disruptorExceptionHandler
 	) {
 		return AccountDisruptor.setup(
 				accountCommandJournalHandler,
 				accountCommandReplicateHandler,
-				accountBusinessHandler
+				accountBusinessHandler,
+				disruptorExceptionHandler
 		);
 	}
 

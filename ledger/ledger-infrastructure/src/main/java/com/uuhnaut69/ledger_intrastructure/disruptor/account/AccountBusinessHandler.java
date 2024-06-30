@@ -46,7 +46,7 @@ public class AccountBusinessHandler implements EventHandler<AccountCommandWrappe
 		try {
 			var account = switch (event.getCommand()) {
 				case CreateAccountCommand c ->
-						this.accountUseCase.createAccount(c.externalId(), c.code(), c.amount());
+						this.accountUseCase.createAccount(c.externalId(), c.code(), c.ledger(), c.amount());
 				case DepositCommand d -> this.accountUseCase.deposit(d.accountId(), d.amount());
 				case WithdrawCommand w -> this.accountUseCase.withdraw(w.accountId(), w.amount());
 				case TransferCommand t ->

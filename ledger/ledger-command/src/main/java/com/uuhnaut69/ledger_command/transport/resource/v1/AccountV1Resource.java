@@ -57,6 +57,7 @@ public class AccountV1Resource {
 						new CreateAccountCommand(
 								request.externalId(),
 								request.code(),
+								request.ledger(),
 								request.amount()
 						)
 				)

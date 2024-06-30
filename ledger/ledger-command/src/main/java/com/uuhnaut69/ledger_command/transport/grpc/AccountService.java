@@ -57,6 +57,7 @@ public class AccountService implements AccountGrpc {
 						new CreateAccountCommand(
 								request.getExternalId(),
 								request.getCode(),
+								request.getLedger(),
 								request.getAmount()
 						)
 				)

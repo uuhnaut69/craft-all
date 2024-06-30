@@ -28,6 +28,7 @@ package com.uuhnaut69.ledger_command.transport.resource.v1.dto;
 public record CreateAccountRequest(
 		Long externalId,
 		Integer code,
+		Integer ledger,
 		Long amount
 ) {
 

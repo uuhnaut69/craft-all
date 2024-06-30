@@ -42,6 +42,8 @@ public class Account extends BaseEntity {
 
 	private Integer code;
 
+	private Integer ledger;
+
 	private Long amount;
 
 	public boolean canWithdraw(Long amount) {

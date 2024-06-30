@@ -32,10 +32,11 @@ public interface AccountUseCase {
 	 *
 	 * @param externalId External ID
 	 * @param code       Account code
+	 * @param ledger     Ledger ID
 	 * @param amount     Initial amount
 	 * @return Account
 	 */
-	Account createAccount(Long externalId, Integer code, Long amount);
+	Account createAccount(Long externalId, Integer code, Integer ledger, Long amount);
 
 
 	/**

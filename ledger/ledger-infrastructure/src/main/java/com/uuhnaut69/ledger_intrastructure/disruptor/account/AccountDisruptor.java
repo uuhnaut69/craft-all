@@ -28,6 +28,7 @@ package com.uuhnaut69.ledger_intrastructure.disruptor.account;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.util.DaemonThreadFactory;
 import com.uuhnaut69.ledger_domain.account.AccountCommandWrapper;
+import com.uuhnaut69.ledger_intrastructure.disruptor.DisruptorExceptionHandler;
 
 public final class AccountDisruptor {
 
@@ -37,7 +38,8 @@ public final class AccountDisruptor {
 	public static Disruptor<AccountCommandWrapper> setup(
 			AccountCommandJournalHandler journalHandler,
 			AccountCommandReplicateHandler replicateHandler,
-			AccountBusinessHandler businessHandler
+			AccountBusinessHandler businessHandler,
+			DisruptorExceptionHandler exceptionHandler
 	) {
 		int bufferSize = 1024;
 		var disruptor = new Disruptor<>(
@@ -49,6 +51,8 @@ public final class AccountDisruptor {
 		disruptor
 				.handleEventsWith(journalHandler, replicateHandler)
 				.then(businessHandler);
+
+		disruptor.setDefaultExceptionHandler(exceptionHandler);
 
 		disruptor.start();
 

@@ -23,13 +23,23 @@
  *
  */
 
-package com.uuhnaut69.ledger_domain.account;
+package com.uuhnaut69.ledger_intrastructure.disruptor;
 
-public record CreateAccountCommand(
-		Long externalId,
-		Integer code,
-		Integer ledger,
-		Long amount
-) {
+import com.lmax.disruptor.ExceptionHandler;
 
+public class DisruptorExceptionHandler implements ExceptionHandler<Object> {
+
+	@Override
+	public void handleEventException(Throwable ex, long sequence, Object event) {
+	}
+
+	@Override
+	public void handleOnStartException(Throwable ex) {
+
+	}
+
+	@Override
+	public void handleOnShutdownException(Throwable ex) {
+
+	}
 }

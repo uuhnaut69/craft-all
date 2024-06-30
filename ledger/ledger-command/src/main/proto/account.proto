@@ -24,13 +24,15 @@ message AccountResponse {
   int64 id = 1;
   int64 externalId = 2;
   int32 code = 3;
-  int64 amount = 4;
+  int32 ledger = 4;
+  int64 amount = 5;
 }
 
 message CreateAccountRequest {
   int64 externalId = 1;
   int32 code = 2;
-  int64 amount = 3;
+  int32 ledger = 3;
+  int64 amount = 4;
 }
 
 message DepositRequest {

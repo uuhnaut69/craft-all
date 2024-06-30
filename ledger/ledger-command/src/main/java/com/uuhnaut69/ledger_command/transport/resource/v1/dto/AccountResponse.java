@@ -31,6 +31,7 @@ public record AccountResponse(
 		Long id,
 		Long externalId,
 		Integer code,
+		Integer ledger,
 		Long amount
 ) {
 
@@ -39,6 +40,7 @@ public record AccountResponse(
 				account.getId(),
 				account.getExternalId(),
 				account.getCode(),
+				account.getLedger(),
 				account.getAmount()
 		);
 	}

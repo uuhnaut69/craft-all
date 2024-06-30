@@ -35,8 +35,8 @@ public class AccountUseCaseImpl implements AccountUseCase {
 	private final AccountRepository accountRepository;
 
 	@Override
-	public Account createAccount(Long externalId, Integer code, Long amount) {
-		var account = new Account(externalId, code, amount);
+	public Account createAccount(Long externalId, Integer code, Integer ledger, Long amount) {
+		var account = new Account(externalId, code, ledger, amount);
 		account.setId(this.accountRepository.getNextId());
 		account.setTimestamp(Instant.now().getEpochSecond());
 		return this.accountRepository.save(account);
