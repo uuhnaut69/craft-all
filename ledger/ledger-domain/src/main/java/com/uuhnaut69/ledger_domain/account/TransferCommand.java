@@ -23,23 +23,12 @@
  *
  */
 
-package com.uuhnaut69.ledger_command.transport.resource.v1.dto;
+package com.uuhnaut69.ledger_domain.account;
 
-import com.uuhnaut69.ledger_domain.account.Account;
-
-public record AccountResponse(
-		Long id,
-		Long externalId,
-		Integer code,
+public record TransferCommand(
+		Long fromAccountId,
+		Long toAccountId,
 		Long amount
 ) {
 
-	public static AccountResponse from(Account account) {
-		return new AccountResponse(
-				account.getId(),
-				account.getExternalId(),
-				account.getCode(),
-				account.getAmount()
-		);
-	}
 }

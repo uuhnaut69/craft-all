@@ -23,23 +23,47 @@
  *
  */
 
-package com.uuhnaut69.ledger_command.transport.resource.v1.dto;
+package com.uuhnaut69.ledger_domain.account;
 
-import com.uuhnaut69.ledger_domain.account.Account;
+public interface AccountUseCase {
 
-public record AccountResponse(
-		Long id,
-		Long externalId,
-		Integer code,
-		Long amount
-) {
+	/**
+	 * Create an account
+	 *
+	 * @param externalId External ID
+	 * @param code       Account code
+	 * @param amount     Initial amount
+	 * @return Account
+	 */
+	Account createAccount(Long externalId, Integer code, Long amount);
 
-	public static AccountResponse from(Account account) {
-		return new AccountResponse(
-				account.getId(),
-				account.getExternalId(),
-				account.getCode(),
-				account.getAmount()
-		);
-	}
+
+	/**
+	 * Deposit amount to account
+	 *
+	 * @param accountId Account ID
+	 * @param amount    Amount
+	 * @return Account
+	 */
+	Account deposit(Long accountId, Long amount);
+
+	/**
+	 * Withdraw amount from an account
+	 *
+	 * @param accountId Account ID
+	 * @param amount    Amount
+	 * @return Account
+	 */
+	Account withdraw(Long accountId, Long amount);
+
+
+	/**
+	 * Transfer amount from an account to another account
+	 *
+	 * @param fromAccountId From account ID
+	 * @param toAccountId   To account ID
+	 * @param amount        Amount
+	 * @return Account
+	 */
+	Account transfer(Long fromAccountId, Long toAccountId, Long amount);
 }

@@ -127,7 +127,12 @@
     <!-- Internal -->
     <dependency>
       <groupId>com.uuhnaut69</groupId>
-      <artifactId>ledger-core</artifactId>
+      <artifactId>ledger-domain</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.uuhnaut69</groupId>
+      <artifactId>ledger-infrastructure</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
   </dependencies>

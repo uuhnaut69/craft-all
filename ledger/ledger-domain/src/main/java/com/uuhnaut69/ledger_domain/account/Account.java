@@ -23,23 +23,39 @@
  *
  */
 
-package com.uuhnaut69.ledger_command.transport.resource.v1.dto;
+package com.uuhnaut69.ledger_domain.account;
 
-import com.uuhnaut69.ledger_domain.account.Account;
+import com.uuhnaut69.ledger_domain.BaseEntity;
+import com.uuhnaut69.ledger_domain.LedgerException;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-public record AccountResponse(
-		Long id,
-		Long externalId,
-		Integer code,
-		Long amount
-) {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+public class Account extends BaseEntity {
 
-	public static AccountResponse from(Account account) {
-		return new AccountResponse(
-				account.getId(),
-				account.getExternalId(),
-				account.getCode(),
-				account.getAmount()
-		);
+	private Long externalId;
+
+	private Integer code;
+
+	private Long amount;
+
+	public boolean canWithdraw(Long amount) {
+		return this.amount >= amount;
+	}
+
+	public void deposit(Long amount) {
+		this.amount += amount;
+	}
+
+	public void withdraw(Long amount) {
+		if (!canWithdraw(amount)) {
+			throw new LedgerException("INSUFFICIENT_BALANCE_ERROR", "Insufficient balance to withdraw");
+		}
+		this.amount -= amount;
 	}
 }

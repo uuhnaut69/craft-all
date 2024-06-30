@@ -23,23 +23,36 @@
  *
  */
 
-package com.uuhnaut69.ledger_command.transport.resource.v1.dto;
+package com.uuhnaut69.ledger_intrastructure.disruptor.account;
 
-import com.uuhnaut69.ledger_domain.account.Account;
+import com.lmax.disruptor.dsl.Disruptor;
+import com.lmax.disruptor.util.DaemonThreadFactory;
+import com.uuhnaut69.ledger_domain.account.AccountCommandWrapper;
 
-public record AccountResponse(
-		Long id,
-		Long externalId,
-		Integer code,
-		Long amount
-) {
+public final class AccountDisruptor {
 
-	public static AccountResponse from(Account account) {
-		return new AccountResponse(
-				account.getId(),
-				account.getExternalId(),
-				account.getCode(),
-				account.getAmount()
-		);
+	private AccountDisruptor() {
 	}
+
+	public static Disruptor<AccountCommandWrapper> setup(
+			AccountCommandJournalHandler journalHandler,
+			AccountCommandReplicateHandler replicateHandler,
+			AccountBusinessHandler businessHandler
+	) {
+		int bufferSize = 1024;
+		var disruptor = new Disruptor<>(
+				AccountCommandWrapper::new,
+				bufferSize,
+				DaemonThreadFactory.INSTANCE
+		);
+
+		disruptor
+				.handleEventsWith(journalHandler, replicateHandler)
+				.then(businessHandler);
+
+		disruptor.start();
+
+		return disruptor;
+	}
+
 }

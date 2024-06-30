@@ -23,23 +23,16 @@
  *
  */
 
-package com.uuhnaut69.ledger_command.transport.resource.v1.dto;
+package com.uuhnaut69.ledger_domain.account;
 
-import com.uuhnaut69.ledger_domain.account.Account;
+import java.util.concurrent.CompletableFuture;
+import lombok.Data;
 
-public record AccountResponse(
-		Long id,
-		Long externalId,
-		Integer code,
-		Long amount
-) {
+@Data
+public class AccountCommandWrapper {
 
-	public static AccountResponse from(Account account) {
-		return new AccountResponse(
-				account.getId(),
-				account.getExternalId(),
-				account.getCode(),
-				account.getAmount()
-		);
-	}
+	private Object command;
+
+	private CompletableFuture<Account> response;
+
 }

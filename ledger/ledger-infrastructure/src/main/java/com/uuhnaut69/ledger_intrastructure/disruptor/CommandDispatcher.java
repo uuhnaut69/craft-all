@@ -23,23 +23,18 @@
  *
  */
 
-package com.uuhnaut69.ledger_command.transport.resource.v1.dto;
+package com.uuhnaut69.ledger_intrastructure.disruptor;
 
-import com.uuhnaut69.ledger_domain.account.Account;
 
-public record AccountResponse(
-		Long id,
-		Long externalId,
-		Integer code,
-		Long amount
-) {
+import java.util.concurrent.CompletableFuture;
 
-	public static AccountResponse from(Account account) {
-		return new AccountResponse(
-				account.getId(),
-				account.getExternalId(),
-				account.getCode(),
-				account.getAmount()
-		);
-	}
+public interface CommandDispatcher<T> {
+
+	/**
+	 * Dispatch command to the command handler
+	 *
+	 * @param command the command
+	 * @return the result of the {@link T} command
+	 */
+	CompletableFuture<T> dispatch(Object command);
 }

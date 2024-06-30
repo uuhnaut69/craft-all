@@ -23,23 +23,14 @@
  *
  */
 
-package com.uuhnaut69.ledger_command.transport.resource.v1.dto;
+package com.uuhnaut69.ledger_domain;
 
-import com.uuhnaut69.ledger_domain.account.Account;
+import lombok.Data;
 
-public record AccountResponse(
-		Long id,
-		Long externalId,
-		Integer code,
-		Long amount
-) {
+@Data
+public abstract class BaseEntity {
 
-	public static AccountResponse from(Account account) {
-		return new AccountResponse(
-				account.getId(),
-				account.getExternalId(),
-				account.getCode(),
-				account.getAmount()
-		);
-	}
+	private Long id;
+
+	private Long timestamp;
 }

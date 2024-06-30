@@ -23,23 +23,17 @@
  *
  */
 
-package com.uuhnaut69.ledger_command.transport.resource.v1.dto;
+package com.uuhnaut69.ledger_domain;
 
-import com.uuhnaut69.ledger_domain.account.Account;
+import lombok.Getter;
 
-public record AccountResponse(
-		Long id,
-		Long externalId,
-		Integer code,
-		Long amount
-) {
+@Getter
+public class LedgerException extends RuntimeException {
 
-	public static AccountResponse from(Account account) {
-		return new AccountResponse(
-				account.getId(),
-				account.getExternalId(),
-				account.getCode(),
-				account.getAmount()
-		);
+	private final String code;
+
+	public LedgerException(String code, String message) {
+		super(message);
+		this.code = code;
 	}
 }

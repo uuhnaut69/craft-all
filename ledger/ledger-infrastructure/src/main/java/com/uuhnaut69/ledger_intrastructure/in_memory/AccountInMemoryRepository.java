@@ -23,23 +23,43 @@
  *
  */
 
-package com.uuhnaut69.ledger_command.transport.resource.v1.dto;
+package com.uuhnaut69.ledger_intrastructure.in_memory;
 
 import com.uuhnaut69.ledger_domain.account.Account;
+import com.uuhnaut69.ledger_domain.account.AccountRepository;
+import java.util.Optional;
+import org.agrona.collections.Long2ObjectHashMap;
+import org.agrona.collections.MutableLong;
 
-public record AccountResponse(
-		Long id,
-		Long externalId,
-		Integer code,
-		Long amount
-) {
+public class AccountInMemoryRepository implements AccountRepository {
 
-	public static AccountResponse from(Account account) {
-		return new AccountResponse(
-				account.getId(),
-				account.getExternalId(),
-				account.getCode(),
-				account.getAmount()
-		);
+	private final MutableLong idGenerator = new MutableLong(0);
+
+	private final Long2ObjectHashMap<Account> accounts = new Long2ObjectHashMap<>();
+
+	@Override
+	public Optional<Account> findById(Long id) {
+		return Optional.ofNullable(this.accounts.get(id));
+	}
+
+	@Override
+	public Account save(Account entity) {
+		this.accounts.put(entity.getId(), entity);
+		return entity;
+	}
+
+	@Override
+	public void snapshot() {
+		throw new RuntimeException("Not implemented");
+	}
+
+	@Override
+	public void restore() {
+		throw new RuntimeException("Not implemented");
+	}
+
+	@Override
+	public Long getNextId() {
+		return this.idGenerator.incrementAndGet();
 	}
 }

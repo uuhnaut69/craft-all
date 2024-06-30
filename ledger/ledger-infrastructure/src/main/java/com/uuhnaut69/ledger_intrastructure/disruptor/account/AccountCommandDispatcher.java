@@ -23,23 +23,29 @@
  *
  */
 
-package com.uuhnaut69.ledger_command.transport.resource.v1.dto;
+package com.uuhnaut69.ledger_intrastructure.disruptor.account;
 
+import com.lmax.disruptor.dsl.Disruptor;
 import com.uuhnaut69.ledger_domain.account.Account;
+import com.uuhnaut69.ledger_domain.account.AccountCommandWrapper;
+import com.uuhnaut69.ledger_intrastructure.disruptor.CommandDispatcher;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+import lombok.RequiredArgsConstructor;
 
-public record AccountResponse(
-		Long id,
-		Long externalId,
-		Integer code,
-		Long amount
-) {
+@RequiredArgsConstructor
+public class AccountCommandDispatcher implements CommandDispatcher<Account> {
 
-	public static AccountResponse from(Account account) {
-		return new AccountResponse(
-				account.getId(),
-				account.getExternalId(),
-				account.getCode(),
-				account.getAmount()
-		);
+	private final Disruptor<AccountCommandWrapper> accountDisruptor;
+
+	@Override
+	public CompletableFuture<Account> dispatch(Object command) {
+		var asyncResponse = new CompletableFuture<Account>();
+		asyncResponse.completeOnTimeout(null, 10, TimeUnit.SECONDS);
+		this.accountDisruptor.publishEvent((event, _) -> {
+			event.setCommand(command);
+			event.setResponse(asyncResponse);
+		});
+		return asyncResponse;
 	}
 }

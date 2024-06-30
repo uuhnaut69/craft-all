@@ -23,23 +23,45 @@
  *
  */
 
-package com.uuhnaut69.ledger_command.transport.resource.v1.dto;
+package com.uuhnaut69.ledger_domain;
 
-import com.uuhnaut69.ledger_domain.account.Account;
+import java.util.Optional;
 
-public record AccountResponse(
-		Long id,
-		Long externalId,
-		Integer code,
-		Long amount
-) {
+public interface BaseRepository<ID, T extends BaseEntity> {
 
-	public static AccountResponse from(Account account) {
-		return new AccountResponse(
-				account.getId(),
-				account.getExternalId(),
-				account.getCode(),
-				account.getAmount()
-		);
-	}
+	/**
+	 * Find entity by id
+	 *
+	 * @param id Entity {@link ID} id
+	 * @return Entity {@link T}
+	 */
+	Optional<T> findById(ID id);
+
+	/**
+	 * Save entity
+	 *
+	 * @param entity {@link T}
+	 * @return Entity {@link T}
+	 */
+	T save(T entity);
+
+	/**
+	 * Snapshot data
+	 */
+	void snapshot();
+
+
+	/**
+	 * Restore data
+	 */
+	void restore();
+
+
+	/**
+	 * Get next id
+	 *
+	 * @return Next {@link ID} id
+	 */
+	ID getNextId();
+
 }

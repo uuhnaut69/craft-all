@@ -28,12 +28,13 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.uuhnaut69</groupId>
+    <artifactId>ledger</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
 
-  <groupId>com.uuhnaut69</groupId>
-  <artifactId>ledger</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  <description>Parent pom of ledger service</description>
+  <artifactId>ledger-infrastructure</artifactId>
 
   <properties>
     <maven.compiler.source>22</maven.compiler.source>
@@ -41,10 +42,29 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-  <modules>
-    <module>ledger-command</module>
-    <module>ledger-domain</module>
-    <module>ledger-infrastructure</module>
-  </modules>
+  <dependencies>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.34</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.agrona</groupId>
+      <artifactId>agrona</artifactId>
+      <version>1.21.2</version>
+    </dependency>
+    <dependency>
+      <groupId>com.lmax</groupId>
+      <artifactId>disruptor</artifactId>
+      <version>4.0.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.uuhnaut69</groupId>
+      <artifactId>ledger-domain</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
 
 </project>

@@ -23,23 +23,16 @@
  *
  */
 
-package com.uuhnaut69.ledger_command.transport.resource.v1.dto;
+package com.uuhnaut69.ledger_intrastructure.disruptor.account;
 
-import com.uuhnaut69.ledger_domain.account.Account;
 
-public record AccountResponse(
-		Long id,
-		Long externalId,
-		Integer code,
-		Long amount
-) {
+import com.lmax.disruptor.EventHandler;
+import com.uuhnaut69.ledger_domain.account.AccountCommandWrapper;
 
-	public static AccountResponse from(Account account) {
-		return new AccountResponse(
-				account.getId(),
-				account.getExternalId(),
-				account.getCode(),
-				account.getAmount()
-		);
+public class AccountCommandJournalHandler implements EventHandler<AccountCommandWrapper> {
+
+	@Override
+	public void onEvent(AccountCommandWrapper event, long sequence, boolean endOfBatch)
+			throws Exception {
 	}
 }
