@@ -38,44 +38,49 @@ import com.uuhnaut69.ledger_core.infrastructure.queue.disruptor.account.AccountC
 import com.uuhnaut69.ledger_core.infrastructure.queue.disruptor.account.AccountCommandJournalHandler;
 import com.uuhnaut69.ledger_core.infrastructure.queue.disruptor.account.AccountCommandReplicateHandler;
 import com.uuhnaut69.ledger_core.infrastructure.queue.disruptor.account.AccountDisruptor;
-import io.quarkus.arc.DefaultBean;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Singleton;
 
 @Dependent
 public class ApplicationBoostrap {
 
 	// Persistence layer
 	@Produces
-	@DefaultBean
+	@ApplicationScoped
 	public AccountRepository accountRepository() {
 		return new AccountInMemoryRepository();
 	}
 
 	// Domain layer
 	@Produces
-	@DefaultBean
+	@ApplicationScoped
 	public AccountUseCase accountUseCase(AccountRepository accountRepository) {
 		return new AccountUseCaseImpl(accountRepository);
 	}
 
 	// Disruptor Queue
 	@Produces
+	@ApplicationScoped
 	public AccountCommandJournalHandler accountCommandJournalHandler() {
 		return new AccountCommandJournalHandler();
 	}
 
 	@Produces
+	@ApplicationScoped
 	public AccountCommandReplicateHandler accountCommandReplicateHandler() {
 		return new AccountCommandReplicateHandler();
 	}
 
 	@Produces
+	@ApplicationScoped
 	public AccountBusinessHandler accountBusinessHandler(AccountUseCase accountUseCase) {
 		return new AccountBusinessHandler(accountUseCase);
 	}
 
 	@Produces
+	@Singleton
 	public Disruptor<AccountCommandWrapper> accountCommandWrapperDisruptor(
 			AccountCommandJournalHandler accountCommandJournalHandler,
 			AccountCommandReplicateHandler accountCommandReplicateHandler,
@@ -89,6 +94,7 @@ public class ApplicationBoostrap {
 	}
 
 	@Produces
+	@ApplicationScoped
 	public CommandDispatcher<Account> accountCommandDispatcher(
 			Disruptor<AccountCommandWrapper> disruptor
 	) {
