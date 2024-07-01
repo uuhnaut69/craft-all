@@ -45,6 +45,7 @@
     <module>ledger-command</module>
     <module>ledger-domain</module>
     <module>ledger-infrastructure</module>
+    <module>ledger-gateway</module>
   </modules>
 
 </project>

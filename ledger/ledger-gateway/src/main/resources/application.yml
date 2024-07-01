@@ -1,0 +1,6 @@
+quarkus:
+  grpc:
+    clients:
+      account:
+        port: 50051
+        compression: gzip

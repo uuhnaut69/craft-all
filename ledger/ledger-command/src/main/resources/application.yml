@@ -1,0 +1,7 @@
+quarkus:
+  grpc:
+    server:
+      compression: gzip
+      port: 50051
+  http:
+    port: 9999

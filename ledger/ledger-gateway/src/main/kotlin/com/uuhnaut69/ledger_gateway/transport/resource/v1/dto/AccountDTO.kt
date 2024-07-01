@@ -23,11 +23,35 @@
  *
  */
 
-package com.uuhnaut69.ledger_command.transport.resource.v1.dto;
+package com.uuhnaut69.ledger_gateway.transport.resource.v1.dto
 
-public record DepositRequest(
-		Long accountId,
-		Long amount
-) {
+data class AccountResponse(
+	val id: Long,
+	val externalId: Long,
+	val code: Int,
+	val ledger: Int,
+	val amount: Long,
+)
 
-}
+data class CreateAccountRequest(
+	val externalId: Long,
+	val code: Int,
+	val ledger: Int,
+	val amount: Long
+)
+
+data class DepositRequest(
+	val accountId: Long,
+	val amount: Long
+)
+
+data class TransferRequest(
+	val fromAccountId: Long,
+	val toAccountId: Long,
+	val amount: Long
+)
+
+data class WithdrawRequest(
+	val accountId: Long,
+	val amount: Long
+)
